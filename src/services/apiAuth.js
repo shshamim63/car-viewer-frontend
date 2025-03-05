@@ -1,11 +1,12 @@
 import axios from "axios";
-
-import { storage } from "../utils/storage";
 import { API_URL, TOKEN_TYPE } from "../utils/constants";
 import { safeApiCall } from "../utils/requestWrapper";
 
-export const useLogin = async () => {
-  const fetchProfile = () => axios.get(`${API_URL}/auth/login`);
+export const loginAPi = async ({ email, password }) => {
+  const requestBody = { email, password };
+
+  const fetchProfile = () =>
+    axios.post(`${API_URL}/auth/login`, requestBody, { withCredentials: true });
 
   const { data, error } = await safeApiCall(fetchProfile);
 
@@ -14,13 +15,10 @@ export const useLogin = async () => {
   return data;
 };
 
-export const getCurrentUser = async (id) => {
-  const token = storage.getToken();
-  if (!token) return null;
-
+export const getCurrentUser = async (accessToken) => {
   const fetchProfile = () =>
-    axios.get(`${API_URL}/${id}/profile`, {
-      headers: { Authorization: `${TOKEN_TYPE} ${token}` },
+    axios.get(`${API_URL}/users/profile`, {
+      headers: { Authorization: `${TOKEN_TYPE} ${accessToken}` },
     });
 
   const { data, error } = await safeApiCall(fetchProfile);

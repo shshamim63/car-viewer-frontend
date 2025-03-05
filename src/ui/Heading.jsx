@@ -15,6 +15,7 @@ const Heading = styled.h1`
       font-weight: 600;
       text-align: center;
     `}
+  margin: 1rem 0;
 `;
 
 export default Heading;

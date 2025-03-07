@@ -15,6 +15,34 @@ export const loginAPi = async ({ email, password }) => {
   return data;
 };
 
+export const signupApi = async ({
+  firstName,
+  lastName,
+  email,
+  username,
+  password,
+  confirmPassword,
+}) => {
+  const requestBody = {
+    firstName,
+    lastName,
+    username,
+    email,
+    password,
+    confirmPassword,
+  };
+  const singupUser = axios.post(`${API_URL}/auth/signup`, requestBody, {
+    withCredentials: true,
+  });
+
+  const { data, error } = await safeApiCall(singupUser);
+
+  if (error) throw new Error(error.message);
+
+  console.log(data);
+  return data;
+};
+
 export const getCurrentUser = async (accessToken) => {
   const fetchProfile = () =>
     axios.get(`${API_URL}/users/profile`, {

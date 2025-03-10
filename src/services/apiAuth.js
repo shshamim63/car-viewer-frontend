@@ -31,9 +31,10 @@ export const signupApi = async ({
     password,
     confirmPassword,
   };
-  const singupUser = axios.post(`${API_URL}/auth/signup`, requestBody, {
-    withCredentials: true,
-  });
+  const singupUser = () =>
+    axios.post(`${API_URL}/auth/signup`, requestBody, {
+      withCredentials: true,
+    });
 
   const { data, error } = await safeApiCall(singupUser);
 

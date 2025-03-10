@@ -4,3 +4,5 @@ export const TOKEN_KEY = "token";
 export const TOKEN_TYPE = "Bearer";
 
 export const USER_QUERY_KEY = "user";
+
+export const EMAIL_REGEX = /\S+@\S+\.\S+/;

@@ -7,9 +7,12 @@ const Logout = () => {
   const { logout, isLoading } = useLogout();
 
   return (
-    <ButtonIcon disabled={isLoading} onClick={logout}>
-      {isLoading ? <SpinnerMini /> : <HiArrowRightOnRectangle />}
-    </ButtonIcon>
+    <>
+      <ButtonIcon disabled={isLoading} onClick={logout}>
+        {isLoading ? <SpinnerMini /> : <HiArrowRightOnRectangle />}
+      </ButtonIcon>
+      <span>Logout</span>
+    </>
   );
 };
 

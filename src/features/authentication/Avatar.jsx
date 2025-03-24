@@ -1,14 +1,7 @@
 import styled from "styled-components";
-import { useUser } from "./useUser";
+import PropTypes from "prop-types";
 
-const StyledAvatar = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 1.2rem;
-  font-size: 1.4rem;
-  font-weight: 500;
-  color: var(--color-grey-600);
-`;
+import { useUser } from "./useUser";
 
 const StyledImage = styled.img`
   display: block;
@@ -20,22 +13,16 @@ const StyledImage = styled.img`
   outline: 2px solid var(--color-grey-100);
 `;
 
-const Avatar = () => {
+const Avatar = ({ onClick }) => {
   const { user } = useUser();
 
   if (!user) return;
 
-  const { firstName, lastName } = user;
+  return <StyledImage onClick={onClick} src="default-user.png" alt="demo" />;
+};
 
-  const fullName =
-    firstName && lastName ? firstName + " " + lastName : "Username Missing";
-
-  return (
-    <StyledAvatar>
-      <StyledImage src="default-user.png" alt="demo" />
-      <span>{fullName}</span>
-    </StyledAvatar>
-  );
+Avatar.propTypes = {
+  onClick: PropTypes.func,
 };
 
 export default Avatar;

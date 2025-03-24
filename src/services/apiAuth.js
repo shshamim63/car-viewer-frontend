@@ -55,3 +55,19 @@ export const getCurrentUser = async (accessToken) => {
 
   return data;
 };
+
+export const logoutAPI = async () => {
+  const logoutCallback = () =>
+    axios.post(
+      `${API_URL}/auth/logout`,
+      {},
+      {
+        withCredentials: true,
+      }
+    );
+  const { data, error } = await safeApiCall(logoutCallback);
+
+  if (error) throw new Error(error.message);
+
+  return data;
+};

@@ -1,7 +1,8 @@
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import { HiOutlineUser } from "react-icons/hi2";
 import PropTypes from "prop-types";
+
+import { HiOutlineUser } from "react-icons/hi2";
+import styled from "styled-components";
 
 import ButtonIcon from "./ButtonIcon";
 import Logout from "../features/authentication/Logout";
@@ -11,8 +12,8 @@ import { MdCancel } from "react-icons/md";
 
 const StyledHeaderMenu = styled.ul`
   position: absolute;
-  right: 4%;
-  margin-top: 4.5%;
+  right: 4.8rem;
+  margin-top: 4.8rem;
   width: 12rem;
   background: var(--color-grey-0);
   box-shadow: 0px 4px 6px rgb(0, 0, 0, 1.2);

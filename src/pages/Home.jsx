@@ -13,7 +13,6 @@ const Home = () => {
           Please inform your employer to activate your account.
         </Heading>
       )}
-      
     </Row>
   );
 };

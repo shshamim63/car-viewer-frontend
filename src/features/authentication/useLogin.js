@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 
 import { loginAPi } from "../../services/apiAuth";
 import { useAuth } from "./useAuth";
+import { USER_QUERY_KEY } from "../../utils/constants";
 
 export const useLogin = () => {
   const { setCurrentAccessToken } = useAuth();
@@ -18,7 +19,7 @@ export const useLogin = () => {
       delete user.accessToken;
       delete user.refreshToken;
 
-      queryClient.setQueryData(["user"], user);
+      queryClient.setQueryData([USER_QUERY_KEY], user);
       navigate("/home", { replace: true });
     },
     onError: (err) => {

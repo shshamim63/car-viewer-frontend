@@ -5,7 +5,6 @@ import GlobalStyles from "./styles/GlobalStyles";
 import { Toaster } from "react-hot-toast";
 
 import Router from "./Router";
-import { AuthProvider } from "./context/AuthContext";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -20,9 +19,8 @@ const App = () => {
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} />
       <GlobalStyles />
-      <AuthProvider>
-        <Router />
-      </AuthProvider>
+
+      <Router />
 
       <Toaster
         position="top-center"

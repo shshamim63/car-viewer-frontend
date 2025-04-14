@@ -20,18 +20,24 @@ const ProtectedRoute = ({ children }) => {
   const navigate = useNavigate();
   const { currentAccessToken, refreshAccessToken } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
+  const [hasTriedRefresh, setHasTriedRefresh] = useState(false);
 
   useEffect(() => {
-    if (!currentAccessToken) {
-      refreshAccessToken()
-        .then((newToken) => {
-          if (!newToken) navigate("/login");
-        })
-        .finally(() => setIsLoading(false));
-    }
-  }, [currentAccessToken, navigate, refreshAccessToken]);
+    const checkToken = async () => {
+      if (!currentAccessToken && !hasTriedRefresh) {
+        const newToken = await refreshAccessToken();
+        setHasTriedRefresh(true);
+        if (!newToken) {
+          navigate("/login", { replace: true });
+        }
+      }
+      setIsLoading(false);
+    };
 
-  if (isLoading && !currentAccessToken) {
+    checkToken();
+  }, [currentAccessToken, hasTriedRefresh, navigate, refreshAccessToken]);
+
+  if (isLoading || (!currentAccessToken && !hasTriedRefresh)) {
     return (
       <FullPage>
         <Spinner />

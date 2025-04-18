@@ -2,17 +2,17 @@ import toast from "react-hot-toast";
 import { useMutation, useQueryClient } from "react-query";
 import { useAuth } from "./useAuth";
 import { useNavigate } from "react-router-dom";
-import { signupApi } from "../../services/apiAuth";
+import { authService } from "../../services/apiAuth";
 
 export const useSignup = () => {
-  const { setCurrentAccessToken } = useAuth();
+  const { setAccessToken } = useAuth();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
   const { mutate: signup, isLoading } = useMutation({
-    mutationFn: signupApi,
+    mutationFn: authService.signup,
     onSuccess: (user) => {
-      setCurrentAccessToken(user.accessToken);
+      setAccessToken(user.accessToken);
 
       delete user.accessToken;
       delete user.refreshToken;

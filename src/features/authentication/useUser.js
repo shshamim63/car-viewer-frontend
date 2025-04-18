@@ -1,15 +1,15 @@
 import { useQuery } from "react-query";
-import { getCurrentUser } from "../../services/apiAuth";
+import { authService } from "../../services/apiAuth";
 import { USER_QUERY_KEY } from "../../utils/constants";
 import { useAuth } from "./useAuth";
 
 export const useUser = () => {
-  const { currentAccessToken } = useAuth();
+  const { accessToken } = useAuth();
 
   const { data: user, isLoading } = useQuery({
     queryKey: [USER_QUERY_KEY],
-    queryFn: () => getCurrentUser(currentAccessToken),
-    enabled: !!currentAccessToken,
+    queryFn: authService.profile,
+    enabled: !!accessToken,
   });
   return { user, isLoading };
 };

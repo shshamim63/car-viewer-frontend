@@ -1,3 +1,4 @@
+import UpdatePasswordForm from "../features/authentication/UpdatePasswordForm";
 import UpdateUserForm from "../features/authentication/UpdateUserForm";
 import Heading from "../ui/Heading";
 import Row from "../ui/Row";
@@ -12,6 +13,7 @@ const Profile = () => {
       </Row>
       <Row>
         <Heading as="h3">Update your password</Heading>
+        <UpdatePasswordForm />
       </Row>
     </>
   );

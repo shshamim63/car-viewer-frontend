@@ -9,7 +9,10 @@ export const authService = {
 
     const { data, error } = await safeApiCall(fetchProfile);
 
-    if (error) throw new Error(error.message);
+    if (error) {
+      const errorMessage = error.response?.data?.message || error.message;
+      throw new Error(errorMessage);
+    }
 
     return data;
   },

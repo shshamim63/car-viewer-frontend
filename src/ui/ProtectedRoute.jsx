@@ -17,14 +17,16 @@ const FullPage = styled.div`
 `;
 
 const ProtectedRoute = ({ children }) => {
-  const { accessToken } = useAuth();
+  const { accessToken, isAuthLoading } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!accessToken) navigate("/login", { replace: true });
-  }, [accessToken, navigate]);
+    if (!isAuthLoading && !accessToken) {
+      navigate("/login", { replace: true });
+    }
+  }, [accessToken, navigate, isAuthLoading]);
 
-  if (!accessToken) {
+  if (!accessToken || isAuthLoading) {
     return (
       <FullPage>
         <Spinner />

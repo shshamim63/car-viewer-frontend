@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import styled from "styled-components";
@@ -7,6 +5,8 @@ import styled from "styled-components";
 import Spinner from "./Spinner";
 
 import { useAuth } from "../features/authentication/useAuth";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const FullPage = styled.div`
   height: 100vh;
@@ -17,21 +17,16 @@ const FullPage = styled.div`
 `;
 
 const ProtectedRoute = ({ children }) => {
+  const { accessToken, isAuthLoading } = useAuth();
   const navigate = useNavigate();
-  const { currentAccessToken, refreshAccessToken } = useAuth();
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (!currentAccessToken) {
-      refreshAccessToken()
-        .then((newToken) => {
-          if (!newToken) navigate("/login");
-        })
-        .finally(() => setIsLoading(false));
+    if (!isAuthLoading && !accessToken) {
+      navigate("/login", { replace: true });
     }
-  }, [currentAccessToken, navigate, refreshAccessToken]);
+  }, [accessToken, navigate, isAuthLoading]);
 
-  if (isLoading && !currentAccessToken) {
+  if (!accessToken || isAuthLoading) {
     return (
       <FullPage>
         <Spinner />

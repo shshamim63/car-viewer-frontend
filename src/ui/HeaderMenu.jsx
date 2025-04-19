@@ -65,7 +65,7 @@ const HeaderMenu = ({ onClick }) => {
           <Username>{fullName}</Username>
         </HeaderItem>
       )}
-      <HeaderItem onClick={() => navigate("/account")}>
+      <HeaderItem onClick={() => navigate("/profile")}>
         <ButtonIcon>
           <HiOutlineUser />
         </ButtonIcon>

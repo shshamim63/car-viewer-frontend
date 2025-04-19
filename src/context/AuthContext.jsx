@@ -1,37 +1,91 @@
-import { createContext, useState } from "react";
-import axios from "axios";
+import { createContext, useCallback, useEffect, useState } from "react";
 import PropTypes from "prop-types";
-
-import { safeApiCall } from "../utils/requestWrapper";
-import { API_URL } from "../utils/constants";
 import { useNavigate } from "react-router-dom";
 
-const AuthContext = createContext();
+import { axiosInstance, setAxiosAccessToken } from "../services/axiosInstance";
+
+import { authService } from "../services/apiAuth";
+
+const AuthContext = createContext({
+  accessToken: null,
+  setAccessToken: () => {},
+  logout: () => {},
+});
 
 const AuthProvider = ({ children }) => {
-  const [currentAccessToken, setCurrentAccessToken] = useState(null);
+  const [accessToken, setAccessToken] = useState(null);
+  const [isAuthLoading, setIsAuthLoading] = useState(true);
 
   const navigate = useNavigate();
-  const refreshAccessToken = async () => {
-    const getRefreshToken = () =>
-      axios.post(`${API_URL}/auth/refresh`, {}, { withCredentials: true });
 
-    const { data, error } = await safeApiCall(getRefreshToken);
-
-    if (error) {
+  const logout = useCallback(() => {
+    authService.logout().finally(() => {
+      setAccessToken(null);
+      setAxiosAccessToken(null);
+      setIsAuthLoading(false);
       navigate("/login", { replace: true });
-      throw new Error(error.message);
-    }
+    });
+  }, [navigate]);
 
-    setCurrentAccessToken(data.accessToken);
-    delete data.accessToken;
-    delete data.refreshToken;
-    return data;
-  };
+  useEffect(() => {
+    const interceptor = axiosInstance.interceptors.response.use(
+      (res) => res,
+      async (err) => {
+        const originalRequest = err.config;
+
+        const isAuthRequest =
+          originalRequest.url.includes("/auth/refresh") ||
+          originalRequest.url.includes("/auth/logout") ||
+          originalRequest._retry;
+        if (err.response?.status === 401 && !isAuthRequest) {
+          originalRequest._retry = true;
+          try {
+            setIsAuthLoading(true);
+            const { accessToken: newAccessToken } = await authService.refresh();
+            setAccessToken(newAccessToken);
+            setAxiosAccessToken(newAccessToken);
+            originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+            setIsAuthLoading(false);
+            return axiosInstance(originalRequest);
+          } catch (refreshErr) {
+            setAccessToken(null);
+            setAxiosAccessToken(null);
+            setIsAuthLoading(false);
+            return Promise.reject(refreshErr);
+          }
+        }
+
+        return Promise.reject(err);
+      }
+    );
+
+    return () => axiosInstance.interceptors.response.eject(interceptor);
+  }, [logout]);
+
+  useEffect(() => {
+    authService
+      .refresh()
+      .then(({ accessToken }) => {
+        setAccessToken(accessToken);
+        setAxiosAccessToken(accessToken);
+        setIsAuthLoading(false);
+      })
+      .catch(() => {
+        setAccessToken(null);
+        setAxiosAccessToken(null);
+        setIsAuthLoading(false);
+      });
+  }, [logout]);
 
   return (
     <AuthContext.Provider
-      value={{ currentAccessToken, setCurrentAccessToken, refreshAccessToken }}
+      value={{
+        accessToken,
+        setAccessToken,
+        logout,
+        isAuthLoading,
+        setIsAuthLoading,
+      }}
     >
       {children}
     </AuthContext.Provider>

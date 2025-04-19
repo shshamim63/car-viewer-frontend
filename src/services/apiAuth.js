@@ -1,73 +1,69 @@
-import axios from "axios";
-import { API_URL, TOKEN_TYPE } from "../utils/constants";
 import { safeApiCall } from "../utils/requestWrapper";
+import { axiosInstance } from "./axiosInstance";
 
-export const loginAPi = async ({ email, password }) => {
-  const requestBody = { email, password };
+export const authService = {
+  login: async ({ email, password }) => {
+    const requestBody = { email, password };
 
-  const fetchProfile = () =>
-    axios.post(`${API_URL}/auth/login`, requestBody, { withCredentials: true });
+    const fetchProfile = () => axiosInstance.post(`/auth/login`, requestBody);
 
-  const { data, error } = await safeApiCall(fetchProfile);
+    const { data, error } = await safeApiCall(fetchProfile);
 
-  if (error) throw new Error(error.message);
+    if (error) {
+      const errorMessage = error.response?.data?.message || error.message;
+      throw new Error(errorMessage);
+    }
 
-  return data;
-};
-
-export const signupApi = async ({
-  firstName,
-  lastName,
-  email,
-  username,
-  password,
-  confirmPassword,
-}) => {
-  const requestBody = {
+    return data;
+  },
+  signup: async ({
     firstName,
     lastName,
-    username,
     email,
+    username,
     password,
     confirmPassword,
-  };
-  const singupUser = () =>
-    axios.post(`${API_URL}/auth/signup`, requestBody, {
-      withCredentials: true,
-    });
+  }) => {
+    const requestBody = {
+      firstName,
+      lastName,
+      username,
+      email,
+      password,
+      confirmPassword,
+    };
+    const singupUser = () => axiosInstance.post(`/auth/signup`, requestBody);
 
-  const { data, error } = await safeApiCall(singupUser);
+    const { data, error } = await safeApiCall(singupUser);
 
-  if (error) throw new Error(error.message);
+    if (error) throw new Error(error.message);
 
-  return data;
-};
+    return data;
+  },
+  refresh: async () => {
+    const fetchProfile = () => axiosInstance.post("/auth/refresh");
+    const { data, error } = await safeApiCall(fetchProfile);
 
-export const getCurrentUser = async (accessToken) => {
-  const fetchProfile = () =>
-    axios.get(`${API_URL}/users/profile`, {
-      headers: { Authorization: `${TOKEN_TYPE} ${accessToken}` },
-    });
+    if (error) throw new Error(error.message);
 
-  const { data, error } = await safeApiCall(fetchProfile);
+    return data;
+  },
+  profile: async () => {
+    const fetchProfile = () => axiosInstance.get("/users/profile");
 
-  if (error) throw new Error(error.message);
+    const { data, error } = await safeApiCall(fetchProfile);
 
-  return data;
-};
+    if (error) throw new Error(error.message);
 
-export const logoutAPI = async () => {
-  const logoutCallback = () =>
-    axios.post(
-      `${API_URL}/auth/logout`,
-      {},
-      {
-        withCredentials: true,
-      }
-    );
-  const { data, error } = await safeApiCall(logoutCallback);
+    return data;
+  },
+  logout: async () => {
+    const logoutCallback = () => axiosInstance.post("/auth/logout");
 
-  if (error) throw new Error(error.message);
+    const { data, error } = await safeApiCall(logoutCallback);
 
-  return data;
+    if (error) throw new Error(error.message);
+
+    return data;
+  },
 };

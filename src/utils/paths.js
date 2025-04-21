@@ -3,4 +3,8 @@ export const APP_ROUTE = {
   LOGIN: "login",
   SIGNUP: "signup",
   PROFILE: "profile",
+  TASKS: "tasks",
+  ENTERPRISE: "enterprise",
+  DESIGNATION: "designation",
+  DEPARTMENTS: "departments",
 };

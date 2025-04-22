@@ -1,27 +1,32 @@
-import styled from "styled-components";
-import Logo from "../ui/Logo";
-import Heading from "../ui/Heading";
-import LoginForm from "../features/authentication/LoginForm";
+import { Grid, Typography } from "@mui/material";
 
-const LoginLayout = styled.main`
-  min-height: 100vh;
-  display: grid;
-  grid-template-columns: 48rem;
-  background-color: var(--color-grey-300);
-  align-content: center;
-  justify-content: center;
-`;
+import Logo from "../ui/Logo";
+
+import LoginForm from "../features/authentication/LoginForm";
 
 const Login = () => {
   return (
-    <LoginLayout>
-      <Logo />
-      <Heading as="h4" type="h4">
-        {" "}
-        Log in to your account
-      </Heading>
-      <LoginForm />
-    </LoginLayout>
+    <Grid
+      component="main"
+      container
+      minHeight="100vh"
+      justifyContent="center"
+      alignContent="center"
+    >
+      <Grid>
+        <Logo />
+        <Typography
+          variant="h4"
+          fontWeight={600}
+          textAlign="center"
+          marginTop="1rem"
+          marginBottom="1rem"
+        >
+          Log in to your account
+        </Typography>
+        <LoginForm />
+      </Grid>
+    </Grid>
   );
 };
 

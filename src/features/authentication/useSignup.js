@@ -23,7 +23,7 @@ export const useSignup = () => {
       delete user.refreshToken;
 
       queryClient.setQueryData(["user"], user);
-      navigate("/home", { replace: true });
+      navigate("/dashboard", { replace: true });
       toast.success(
         `Account successfully created using ${user.email}, please inform your employer`
       );

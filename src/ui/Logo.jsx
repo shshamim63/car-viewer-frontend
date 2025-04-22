@@ -1,12 +1,11 @@
 import { Avatar, Stack } from "@mui/material";
+import { logoSrc } from "../utils/constants";
 
 const Logo = () => {
-  const src = "/logo.png";
-
   return (
     <Stack sx={{ justifyContent: "center", alignItems: "center" }}>
       <Avatar
-        src={src}
+        src={logoSrc}
         alt="logo"
         sx={{ height: "6.6rem", width: "auto", aspectRatio: "1" }}
       />

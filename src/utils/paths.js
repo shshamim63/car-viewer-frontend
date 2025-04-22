@@ -1,5 +1,5 @@
 export const APP_ROUTE = {
-  HOME: "home",
+  HOME: "dashboard",
   LOGIN: "login",
   SIGNUP: "signup",
   PROFILE: "profile",

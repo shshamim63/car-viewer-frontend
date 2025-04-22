@@ -3,6 +3,6 @@ export const safeApiCall = async (axiosCallback) => {
     const { data } = await axiosCallback();
     return { data, error: null };
   } catch (error) {
-    return { data: null, error };
+    return { data: null, error: error };
   }
 };

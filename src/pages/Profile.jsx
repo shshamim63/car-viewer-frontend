@@ -1,18 +1,19 @@
+import { Typography } from "@mui/material";
 import UpdatePasswordForm from "../features/authentication/UpdatePasswordForm";
 import UpdateUserForm from "../features/authentication/UpdateUserForm";
-import Heading from "../ui/Heading";
+
 import Row from "../ui/Row";
 
 const Profile = () => {
   return (
     <>
-      <Heading as="h1">Update your account</Heading>
+      <Typography variant="h1">Update your account</Typography>
       <Row>
-        <Heading as="h3">Update user data</Heading>
+        <Typography variant="h3">Update user data</Typography>
         <UpdateUserForm />
       </Row>
       <Row>
-        <Heading as="h3">Update your password</Heading>
+        <Typography variant="h3">Update your password</Typography>
         <UpdatePasswordForm />
       </Row>
     </>

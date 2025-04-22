@@ -2,8 +2,8 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 
 import GlobalStyles from "../styles/GlobalStyles";
-import Heading from "./Heading";
 import Button from "./Button";
+import { Typography } from "@mui/material";
 
 const StyledErrorFallback = styled.main`
   height: 100vh;
@@ -28,7 +28,7 @@ const ErrorFallback = ({ error, resetErrorBoundary }) => {
     <GlobalStyles>
       <StyledErrorFallback>
         <Box>
-          <Heading as="h2">Something went wrong</Heading>
+          <Typography as="h2">Something went wrong</Typography>
           <p>{error.message}</p>
           <Button onClick={resetErrorBoundary}>Try Again</Button>
         </Box>

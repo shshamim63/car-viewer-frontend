@@ -1,5 +1,6 @@
+import { Typography } from "@mui/material";
 import { useUser } from "../features/authentication/useUser";
-import Heading from "../ui/Heading";
+
 import Row from "../ui/Row";
 
 const Home = () => {
@@ -7,11 +8,11 @@ const Home = () => {
 
   return (
     <Row type={user?.active ? "horizontal" : "vertical"}>
-      <Heading as="h1">Home</Heading>
+      <Typography variant="h1">Home</Typography>
       {!user?.active && (
-        <Heading as="h4">
+        <Typography variant="h4">
           Please inform your employer to activate your account.
-        </Heading>
+        </Typography>
       )}
     </Row>
   );

@@ -1,21 +1,16 @@
-import styled from "styled-components";
-
-const StyledLogo = styled.div`
-  text-align: center;
-`;
-
-const StyledImg = styled.img`
-  height: 9.6rem;
-  width: auto;
-`;
+import { Avatar, Stack } from "@mui/material";
 
 const Logo = () => {
   const src = "/logo.png";
 
   return (
-    <StyledLogo>
-      <StyledImg src={src} />
-    </StyledLogo>
+    <Stack sx={{ justifyContent: "center", alignItems: "center" }}>
+      <Avatar
+        src={src}
+        alt="logo"
+        sx={{ height: "6.6rem", width: "auto", aspectRatio: "1" }}
+      />
+    </Stack>
   );
 };
 

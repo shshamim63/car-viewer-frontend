@@ -1,9 +1,12 @@
 import { useState } from "react";
-import Form from "../../ui/Form";
+import { Link as RouterLink } from "react-router-dom";
+
+import { Stack, TextField, Button, Typography, Link } from "@mui/material";
+
 import { useLogin } from "./useLogin";
+
+import Form from "../../ui/Form";
 import SpinnerMini from "../../ui/SpinnerMini";
-import { Stack, TextField, Button } from "@mui/material";
-import { Link } from "react-router-dom";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -54,11 +57,26 @@ const LoginForm = () => {
           <Button type="submit" variant="contained" fullWidth>
             {isLoading ? <SpinnerMini /> : "Log In"}
           </Button>
-          <Link to="/signup" style={{ textDecoration: "none" }}>
-            <Button type="submit" variant="outlined" fullWidth>
+          <Stack
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            marginTop={2}
+          >
+            <Typography variant="body2">Not yet a member?</Typography>
+            <Link
+              component={RouterLink}
+              to="/signup"
+              sx={{
+                marginLeft: 1,
+                textDecoration: "none",
+                fontWeight: "600",
+                fontSize: "1rem",
+              }}
+            >
               Signup
-            </Button>
-          </Link>
+            </Link>
+          </Stack>
         </Stack>
       </Stack>
     </Form>

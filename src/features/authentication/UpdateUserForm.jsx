@@ -1,17 +1,21 @@
+import { Button, Stack, useMediaQuery, useTheme } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
-import Button from "../../ui/Button";
+
 import Form from "../../ui/Form";
-import FormRow from "../../ui/FormRow";
-import Input from "../../ui/Input";
 import Spinner from "../../ui/Spinner";
+
 import { useUser } from "./useUser";
 import { useUpdateProfile } from "./useUpdateProfile";
+import InputField from "../../ui/InputField";
 
 const UpdateUserForm = () => {
   const { user, isLoading } = useUser();
   const { updateUserProfile, isUpdating } = useUpdateProfile();
   const { register, handleSubmit, reset } = useForm();
+
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   useEffect(() => {
     if (user) {
@@ -44,52 +48,54 @@ const UpdateUserForm = () => {
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
-      <FormRow label="Email address">
-        <Input
-          type="email"
+      <Stack spacing={3}>
+        <InputField
+          label="Email Address"
           id="email"
-          disabled
-          defaultValue={user?.email || ""}
-          {...register("email")}
+          value={user?.email || ""}
+          register={register}
+          disabled={true}
         />
-      </FormRow>
-      <FormRow label="First Name">
-        <Input
+        <InputField
+          label="First Name"
           id="firstName"
-          type="text"
-          defaultValue={user?.firstName || ""}
-          {...register("firstName")}
+          value={user?.firstName || ""}
+          register={register}
+          disabled={false}
         />
-      </FormRow>
-      <FormRow label="Last Name">
-        <Input
+        <InputField
+          label="Last Name"
           id="lastName"
-          type="text"
-          defaultValue={user?.lastName || ""}
-          {...register("lastName")}
+          value={user?.lastName || ""}
+          register={register}
+          disabled={false}
         />
-      </FormRow>
-      <FormRow label="Username">
-        <Input
+        <InputField
+          label="Username"
           id="username"
-          type="text"
-          defaultValue={user?.username || ""}
-          {...register("username")}
+          value={user?.username || ""}
+          register={register}
+          disabled={false}
         />
-      </FormRow>
-      <FormRow>
+      </Stack>
+      <Stack
+        direction={isSmallScreen ? "column-reverse" : "row"}
+        spacing={isSmallScreen ? 2 : 0}
+        justifyContent="space-between"
+        sx={{ marginTop: "1rem" }}
+      >
         <Button
           type="reset"
-          variation="secondary"
+          variant="outlined"
           onClick={resetForm}
           disabled={isLoading || isUpdating}
         >
           Reset
         </Button>
-        <Button type="submit" disabled={isUpdating}>
+        <Button type="submit" variant="contained" disabled={isUpdating}>
           Update Account
         </Button>
-      </FormRow>
+      </Stack>
     </Form>
   );
 };

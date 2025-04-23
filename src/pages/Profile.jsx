@@ -1,21 +1,25 @@
-import { Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
+
 import UpdatePasswordForm from "../features/authentication/UpdatePasswordForm";
 import UpdateUserForm from "../features/authentication/UpdateUserForm";
-
-import Row from "../ui/Row";
+import FormLayout from "../ui/FormLayout";
 
 const Profile = () => {
   return (
     <>
-      <Typography variant="h1">Update your account</Typography>
-      <Row>
-        <Typography variant="h3">Update user data</Typography>
-        <UpdateUserForm />
-      </Row>
-      <Row>
-        <Typography variant="h3">Update your password</Typography>
-        <UpdatePasswordForm />
-      </Row>
+      <Typography variant="h4">Update your account</Typography>
+      <Stack>
+        <Typography variant="h5">Update user information</Typography>
+        <FormLayout>
+          <UpdateUserForm />
+        </FormLayout>
+      </Stack>
+      <Stack>
+        <Typography variant="h5">Update your password</Typography>
+        <FormLayout>
+          <UpdatePasswordForm />
+        </FormLayout>
+      </Stack>
     </>
   );
 };

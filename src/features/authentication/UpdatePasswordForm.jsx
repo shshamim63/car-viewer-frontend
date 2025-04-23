@@ -1,8 +1,15 @@
 import { useForm } from "react-hook-form";
+
+import {
+  Button,
+  Stack,
+  TextField,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
+
 import Form from "../../ui/Form";
-import FormRow from "../../ui/FormRow";
-import Input from "../../ui/Input";
-import Button from "../../ui/Button";
+
 import { useUpdatePassword } from "./useUpdatePassword";
 import { useUser } from "./useUser";
 
@@ -18,6 +25,9 @@ const UpdatePasswordForm = () => {
   const { user, isLoading } = useUser();
   const { updateCurrentPassword, isUpdating } = useUpdatePassword();
 
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
+
   const onSubmit = (data) => {
     if (user?.id) {
       const payload = { requestBody: data, id: user.id };
@@ -30,48 +40,60 @@ const UpdatePasswordForm = () => {
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
-      <FormRow
-        label="Current Password"
-        error={errors?.currentPassword?.message}
-      >
-        <Input
+      <Stack spacing={2}>
+        <TextField
           type="password"
-          autoComplete="current-password"
+          label="Current Password"
           id="currentPassword"
           {...register("currentPassword", {
             required: "Current Password is required",
           })}
+          helperText={errors?.currentPassword?.message}
+          error={!!errors?.currentPassword?.message}
         />
-      </FormRow>
-      <FormRow label="New Password" error={errors?.newPassword?.message}>
-        <Input
+        <TextField
           type="password"
+          label="New Password"
           id="newPassword"
-          {...register("newPassword", { required: "New Password is required" })}
+          {...register("newPassword", {
+            required: "New Password is required",
+            validate: (value) =>
+              getValues("currentPassword") === value ||
+              "Current and new password is same",
+          })}
+          helperText={errors?.newPassword?.message}
+          error={!!errors?.newPassword?.message}
         />
-      </FormRow>
-      <FormRow
-        label="Confirm New Password"
-        error={errors?.confirmNewPassword?.message}
-      >
-        <Input
+        <TextField
           type="password"
+          label="Confirm New Password"
           id="confirmNewPassword"
           {...register("confirmNewPassword", {
             required: "Confirm New Password is required",
             validate: (value) =>
               getValues("newPassword") === value || "Should match New Password",
           })}
+          error={!!errors?.confirmNewPassword?.message}
+          helperText={errors?.confirmNewPassword?.message}
         />
-      </FormRow>
-      <FormRow>
-        <Button type="reset" variation="secondary" onClick={() => reset()}>
-          Reset
-        </Button>
-        <Button type="submit" disabled={isCurrentlyLoading}>
-          Update Password
-        </Button>
-      </FormRow>
+        <Stack
+          direction={isSmallScreen ? "column-reverse" : "row"}
+          spacing={isSmallScreen ? 2 : 0}
+          justifyContent="space-between"
+          sx={{ marginTop: "1rem" }}
+        >
+          <Button type="reset" variant="outlined" onClick={() => reset()}>
+            Reset
+          </Button>
+          <Button
+            type="submit"
+            variant="contained"
+            disabled={isCurrentlyLoading}
+          >
+            Update Password
+          </Button>
+        </Stack>
+      </Stack>
     </Form>
   );
 };

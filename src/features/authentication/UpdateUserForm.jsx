@@ -2,12 +2,12 @@ import { Button, Stack, useMediaQuery, useTheme } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 
-import Form from "../../ui/Form";
-import Spinner from "../../ui/Spinner";
-
 import { useUser } from "./useUser";
 import { useUpdateProfile } from "./useUpdateProfile";
+
+import Form from "../../ui/Form";
 import InputField from "../../ui/InputField";
+import SpinnerMini from "../../ui/SpinnerMini";
 
 const UpdateUserForm = () => {
   const { user, isLoading } = useUser();
@@ -44,7 +44,7 @@ const UpdateUserForm = () => {
     }
   };
 
-  if (isLoading || isUpdating) return <Spinner />;
+  if (isLoading || isUpdating) return <SpinnerMini />;
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
